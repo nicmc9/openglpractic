@@ -39,56 +39,55 @@ void init() {
 	glEnable(GL_DEPTH_TEST);
 
 
-	float vertices[] = {
-	   -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-		0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	   -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-	   -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+	GLfloat vertices[] = {
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
-	   -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-	   -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-	   -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
 
-	   -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	   -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	   -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	   -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	   -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	   -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
-		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
-	   -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	   -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	   -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
 
-	   -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	   -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-	   -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 	};
-
 	
 
 	GLint width = 8;
 	GLint height = 8;
 //	GLubyte* image = SOIL_load_image("brick.jpg", &width, &height, 0, SOIL_LOAD_RGB);
-	GLubyte* image = SOIL_load_image("container.jpg", &width, &height, 0, SOIL_LOAD_RGB);
+	GLubyte* image = SOIL_load_image("res/container.jpg", &width, &height, 0, SOIL_LOAD_RGB);
 	
 	
 	glGenTextures(1, &texture1);
@@ -116,7 +115,7 @@ void init() {
 	//SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	GLubyte* image2 = SOIL_load_image("awesomeface.png", &width, &height, 0, SOIL_LOAD_RGB);
+	GLubyte* image2 = SOIL_load_image("res/awesomeface.png", &width, &height, 0, SOIL_LOAD_RGB);
 
 
 	glGenTextures(1, &texture2);
@@ -155,9 +154,9 @@ void init() {
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
 
-
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(2);
+	//Была неправильная спецификация шаги и другое гавно учись определять
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(1);
 
 	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -235,15 +234,45 @@ int main()
   glm::vec3(1.5f,  0.2f, -1.5f),
   glm::vec3(-1.3f,  1.0f, -1.5f)
 	};
+	/////////////////////////////////
+	///Camera
+
+	///Оказывается важна позиция для LookAt  Ведь это поставщики данныых
+	glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+	std::cout << "cameraPos == vec3(" << cameraPos.x << ", " << cameraPos.y << ", " << cameraPos.z << ") " << '\n';
+
+	///Оказывается важна цель для LookAt Ведь это поставщики данныых
+	glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+
+	glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
+
+	std::cout <<"cameraDirection == vec3("<< cameraDirection.x << ", " << cameraDirection.y << ", " << cameraDirection.z << ") " << '\n';
+
+	///Оказывается важна цель для LookAt  Ведь это поставщики данныых
+	glm::vec3 upWorld = glm::vec3(0.0f, 1.0f, 0.0f);
+
+	glm::vec3 cameraRight = glm::normalize(glm::cross(upWorld, cameraDirection));
+
+	std::cout << "cameraRight == vec3(" << cameraRight.x << ", " << cameraRight.y << ", " << cameraRight.z << ") " << '\n';
+
+	///Остальное вычисления
+	glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
+
+	std::cout << "cameraUp == vec3(" << cameraUp.x << ", " << cameraUp.y << ", " << cameraUp.z << ") " << '\n';
 
 	
-	 
+	glm::mat4 viewM = glm::lookAt(glm::vec3(0.0f, 0.0f, 0.3f),
+									glm::vec3(0.0f, 0.0f, 0.0f),
+									glm::vec3(0.0f, 1.0f, 0.0f));
 
-	 glm::mat4 view(1.0f);
+	/////////////////////////////////
 
-	 view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+	glm::mat4 view(1.0f);
+
+	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 
 
+	 ////////////////////
 	 glm::mat4  projection = glm::perspective(glm::radians(45.0f), (GLfloat)width / height, 0.1f, 100.0f);
 
 	//Вызвай до использования присвоений в программу
