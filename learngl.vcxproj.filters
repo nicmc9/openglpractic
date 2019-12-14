@@ -29,6 +29,7 @@
     <None Include="shaders\shader.frag">
       <Filter>shaders</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="brick.jpg">

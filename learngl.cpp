@@ -17,13 +17,21 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "shader_m.h"
+#include "camera.h"
+
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+void processInput(GLFWwindow* window);
+
 
 GLuint VBO, VAO, EBO;
-
 GLuint texture1,texture2;
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-auto cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-glm::vec3 upWorld = glm::vec3(0.0f, 1.0f, 0.0f);
+
+
+// camera
+Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
 
 GLfloat deltaTime = 0.0f;	// Время, прошедшее между последним и текущим кадром
@@ -34,11 +42,9 @@ GLfloat pitch = 0.0f;
 
 bool keys[1024];
 //bool firstMouse = true;
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+
 
 GLfloat lastX = 400 , lastY = 300;
-GLfloat fov = 45.0f;
-
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
@@ -54,52 +60,39 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
 }
+
+void processInput(GLFWwindow* window)
+{
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, true);
+
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		camera.ProcessKeyboard(FORWARD, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		camera.ProcessKeyboard(BACKWARD, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		camera.ProcessKeyboard(LEFT, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		camera.ProcessKeyboard(RIGHT, deltaTime);
+}
+
+
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
-
-
-	///Замененно на glfwSetCursorPos
-	//if (firstMouse) // эта переменная была проинициализирована значением true
-	//{
-	//	lastX = xpos;
-	//	lastY = ypos;
-	//	firstMouse = false;
-	//}
-
-	
+		
 	GLfloat xoffset = xpos - lastX;
-	GLfloat yoffset = lastY - ypos; // Обратный порядок вычитания потому что оконные Y-координаты возрастают с верху вниз 
+	GLfloat yoffset = lastY - ypos; 
 	lastX = xpos;
 	lastY = ypos;
 
-	GLfloat sensitivity = 0.05f;
-	xoffset *= sensitivity;
-	yoffset *= sensitivity;
-
-	yaw += xoffset;
-	pitch += yoffset;
-
-	if (pitch > 89.0f)
-		pitch = 89.0f;
-	if (pitch < -89.0f)
-		pitch = -89.0f;
-
-	glm::vec3 front;
-	front.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
-	front.y = sin(glm::radians(pitch));
-	front.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));
-	cameraFront = glm::normalize(front);
+	camera.ProcessMouseMovement(xoffset, yoffset);
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-	if (fov >= 1.0f && fov <= 45.0f)
-		fov -= yoffset;
-	if (fov <= 1.0f)
-		fov = 1.0f;
-	if (fov >= 45.0f)
-		fov = 45.0f;
+	camera.ProcessMouseScroll(yoffset);
 }
 ///Теперь проверки на каждой итерации цикла
+/*
 void do_movement()
 {
 	GLfloat cameraSpeed = 5.0f * deltaTime;
@@ -129,7 +122,7 @@ void do_movement()
 	}
 
 	
-}
+}*/
 
 void init() {
 
@@ -376,50 +369,33 @@ int main()
 	/////////////////////////////////
 
 
-	GLfloat radius = 15.0f;
+	
 
 
-	///glm::mat4 view(1.0f);
-	///view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 
 
 	 ////////////////////
 	
 
 	//Вызвай до использования присвоений в программу
-	ourShader.use();
-		
-	GLint modelLoc = glGetUniformLocation(ourShader.ID, "model");
-	GLint viewLoc = glGetUniformLocation(ourShader.ID, "view");
-	GLint projectionLoc = glGetUniformLocation(ourShader.ID, "projection");
-
+	
+	
 	
 
 	////////////////////////////////////
 
-	/// Мы не вызывает Uniform но текстура сама попадаешь в шейдер объект Sampler2d
-		///Хотя нужную текстуры все-таки забандили
-		/// Активируем текстурный блок перед привязкой текстуры
-	glActiveTexture(GL_TEXTURE0); 	/// Хотя нулевой блок всегда активирован по умолчанию
-	/// Если нужно более одного то начинаем все активировать
-	glBindTexture(GL_TEXTURE_2D, texture1);
-	glUniform1i(glGetUniformLocation(ourShader.ID, "ourTexture1"), 0);
-
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, texture2);
-	glUniform1i(glGetUniformLocation(ourShader.ID, "ourTexture2"), 1);
+	
 
 	
 
 	while (!glfwWindowShouldClose(window))
 	{
 		
-
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glfwPollEvents();
-		do_movement();
+	
+		
 		///И вот ответ матрицу надо всегда сбрасывать до начальных значений на каждой итерации
 		///иначе значения вращения будут прибавляться по нарастающей
 		///Так как матрица объявлена здесь то и отправка ее в шейдер пойдет после объявления
@@ -428,16 +404,32 @@ int main()
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 		
-		//GLfloat camX = sin(glfwGetTime()) * radius;
-		//GLfloat camZ = cos(glfwGetTime()) * radius;
+		processInput(window);
+
+		ourShader.use();
 
 
-		auto viewM2 = glm::lookAt(cameraPos, cameraPos+ cameraFront, upWorld);
-		//auto view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
-		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(viewM2));
+		/// Мы не вызывает Uniform но текстура сама попадаешь в шейдер объект Sampler2d
+		///Хотя нужную текстуры все-таки забандили
+		/// Активируем текстурный блок перед привязкой текстуры
+		glActiveTexture(GL_TEXTURE0); 	/// Хотя нулевой блок всегда активирован по умолчанию
+		/// Если нужно более одного то начинаем все активировать
+		glBindTexture(GL_TEXTURE_2D, texture1);
+		glUniform1i(glGetUniformLocation(ourShader.ID, "ourTexture1"), 0);
 
-		glm::mat4  projection = glm::perspective(glm::radians(fov), (GLfloat)width / height, 0.1f, 100.0f);
-		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, texture2);
+		glUniform1i(glGetUniformLocation(ourShader.ID, "ourTexture2"), 1);
+
+		GLint modelLoc = glGetUniformLocation(ourShader.ID, "model");
+
+		glm::mat4 view = camera.GetViewMatrix();
+		ourShader.setMat4("view", view);
+
+		glm::mat4  projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)width / height, 0.1f, 100.0f);
+		ourShader.setMat4("projection", projection);
+
+
 
 		glBindVertexArray(VAO);
 
@@ -452,14 +444,16 @@ int main()
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
 		glBindVertexArray(0);
-
+		
 		glfwSwapBuffers(window);
+		glfwPollEvents();
 		/// Проверяем события и вызываем функции обратного вызова.
 		
 	}
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &EBO);
+
 
 	glfwTerminate();
 	return 0;
