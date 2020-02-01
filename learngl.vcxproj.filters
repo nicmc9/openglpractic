@@ -30,6 +30,12 @@
       <Filter>shaders</Filter>
     </None>
     <None Include="ClassDiagram.cd" />
+    <None Include="shaders\lamp.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\lamp.vert">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="brick.jpg">

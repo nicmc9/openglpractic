@@ -26,8 +26,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* window);
 
 
-GLuint VBO, VAO, EBO;
-GLuint texture1,texture2;
+GLuint  cubeVAO, lightVAO, VBO;
 
 
 // camera
@@ -45,6 +44,9 @@ bool keys[1024];
 
 
 GLfloat lastX = 400 , lastY = 300;
+glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+
+
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
@@ -91,38 +93,8 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	camera.ProcessMouseScroll(yoffset);
 }
-///Теперь проверки на каждой итерации цикла
-/*
-void do_movement()
-{
-	GLfloat cameraSpeed = 5.0f * deltaTime;
 
-	if (keys[GLFW_KEY_W]) {
-		auto temp = cameraSpeed * cameraFront;
-		std::cout << "temp == vec3(" << temp.x << ", " << temp.y << ", " << temp.z << ") " << '\n';
-		std::cout << "cameraPos == vec3(" << cameraPos.x << ", " << cameraPos.y << ", " << cameraPos.z << ") " << '\n';
-		cameraPos += temp;
-		std::cout << "cameraPos == vec3(" << cameraPos.x << ", " << cameraPos.y << ", " << cameraPos.z << ") " << '\n';
 
-		auto pf = cameraPos + cameraFront;
-		std::cout << "pf == vec3(" << pf.x << ", " << pf.y << ", " << pf.z << ") " << '\n';
-	}
-	if (keys[GLFW_KEY_S]) {
-		cameraPos -= cameraSpeed * cameraFront;
-	}
-	if (keys[GLFW_KEY_A]) {
-		auto temp = glm::normalize(glm::cross(cameraFront, upWorld)) * cameraSpeed;
-		std::cout << "temp == vec3(" << temp.x << ", " << temp.y << ", " << temp.z << ") " << '\n';
-		std::cout << "cameraPos == vec3(" << cameraPos.x << ", " << cameraPos.y << ", " << cameraPos.z << ") " << '\n';
-		//Без нормализации скорость была бы постоянной
-		cameraPos -= temp;
-	}
-	if (keys[GLFW_KEY_D]) {
-		cameraPos += glm::normalize(glm::cross(cameraFront, upWorld)) * cameraSpeed;
-	}
-
-	
-}*/
 
 void init() {
 
@@ -131,129 +103,74 @@ void init() {
 
 
 	GLfloat vertices[] = {
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+	   -0.5f, -0.5f, -0.5f,
+		0.5f, -0.5f, -0.5f,
+		0.5f,  0.5f, -0.5f,
+		0.5f,  0.5f, -0.5f,
+	   -0.5f,  0.5f, -0.5f,
+	   -0.5f, -0.5f, -0.5f,
 
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	   -0.5f, -0.5f,  0.5f,
+		0.5f, -0.5f,  0.5f,
+		0.5f,  0.5f,  0.5f,
+		0.5f,  0.5f,  0.5f,
+	   -0.5f,  0.5f,  0.5f,
+	   -0.5f, -0.5f,  0.5f,
 
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	   -0.5f,  0.5f,  0.5f,
+	   -0.5f,  0.5f, -0.5f,
+	   -0.5f, -0.5f, -0.5f,
+	   -0.5f, -0.5f, -0.5f,
+	   -0.5f, -0.5f,  0.5f,
+	   -0.5f,  0.5f,  0.5f,
 
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		0.5f,  0.5f,  0.5f,
+		0.5f,  0.5f, -0.5f,
+		0.5f, -0.5f, -0.5f,
+		0.5f, -0.5f, -0.5f,
+		0.5f, -0.5f,  0.5f,
+		0.5f,  0.5f,  0.5f,
 
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	   -0.5f, -0.5f, -0.5f,
+		0.5f, -0.5f, -0.5f,
+		0.5f, -0.5f,  0.5f,
+		0.5f, -0.5f,  0.5f,
+	   -0.5f, -0.5f,  0.5f,
+	   -0.5f, -0.5f, -0.5f,
 
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+	   -0.5f,  0.5f, -0.5f,
+		0.5f,  0.5f, -0.5f,
+		0.5f,  0.5f,  0.5f,
+		0.5f,  0.5f,  0.5f,
+	   -0.5f,  0.5f,  0.5f,
+	   -0.5f,  0.5f, -0.5f,
 	};
-	
-
-	GLint width = 8;
-	GLint height = 8;
-//	GLubyte* image = SOIL_load_image("brick.jpg", &width, &height, 0, SOIL_LOAD_RGB);
-	GLubyte* image = SOIL_load_image("res/container.jpg", &width, &height, 0, SOIL_LOAD_RGB);
-	
-	
-	glGenTextures(1, &texture1);
-	glBindTexture(GL_TEXTURE_2D, texture1);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	//Теперь сгенерируем объект текстуры из наших данных
-	if (image)
-	{
-	//	glTextureStorage2D(texture, 4, GL_R8, width, height);
-    //glTextureSubImage2D(texture, 0, 0, 0, width, height, GL_RED, GL_UNSIGNED_BYTE, image2);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-	glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "Failed to load texture" << std::endl;
-	}
-
-	//SOIL_free_image_data(image);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	GLubyte* image2 = SOIL_load_image("res/awesomeface.png", &width, &height, 0, SOIL_LOAD_RGB);
-
-
-	glGenTextures(1, &texture2);
-	glBindTexture(GL_TEXTURE_2D, texture2);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	//Теперь сгенерируем объект текстуры из наших данных
-	if (image2)
-	{
-		//	glTextureStorage2D(texture, 4, GL_R8, width, height);
-		//glTextureSubImage2D(texture, 0, 0, 0, width, height, GL_RED, GL_UNSIGNED_BYTE, image2);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image2);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "Failed to load texture" << std::endl;
-	}
-
-	//SOIL_free_image_data(image);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	   	
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
+		   	
+	glGenVertexArrays(1, &cubeVAO);
 	glGenBuffers(1, &VBO);
+
+
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(0);
 
-	//Была неправильная спецификация шаги и другое гавно учись определять
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(1);
+	glBindVertexArray(cubeVAO);
+
+	// position attribute
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+	glEnableVertexAttribArray(0);
+	// second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
+
+	glGenVertexArrays(1, &lightVAO);
+	glBindVertexArray(lightVAO);
+	// we only need to bind to the VBO (to link it with glVertexAttribPointer), no need to fill it; the VBO's data already contains all we need (it's already bound, but we do it again for educational purposes)
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
 
 	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	
-			
-	 // remember: do NOT unbind the EBO while a VAO is active as the bound element buffer object IS stored in the VAO; keep the EBO bound.
+		 // remember: do NOT unbind the EBO while a VAO is active as the bound element buffer object IS stored in the VAO; keep the EBO bound.
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	glBindVertexArray(0);
@@ -306,153 +223,89 @@ int main()
 	init();
 
 
-	Shader ourShader("shaders/shader.vert", "shaders/shader.frag");
+	Shader lightingShader("shaders/shader.vert", "shaders/shader.frag");
+	Shader lampShader("shaders/lamp.vert", "shaders/lamp.frag");
 
-
-
-	GLint nrAttributes;
-	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
-	std::cout << "Maximum nr of vertex attributes supported: " << nrAttributes << std::endl;
-	//////////////////////////////////////
-
-	// Сверяемся с документацией
-	//Явно создаем единичную 
-	
-	glm::vec3 cubePositions[] = {
-  glm::vec3(0.0f,  0.0f,  0.0f),
-  glm::vec3(2.0f,  5.0f, -15.0f),
-  glm::vec3(-1.5f, -2.2f, -2.5f),
-  glm::vec3(-3.8f, -2.0f, -12.3f),
-  glm::vec3(2.4f, -0.4f, -3.5f),
-  glm::vec3(-1.7f,  3.0f, -7.5f),
-  glm::vec3(1.3f, -2.0f, -2.5f),
-  glm::vec3(1.5f,  2.0f, -2.5f),
-  glm::vec3(1.5f,  0.2f, -1.5f),
-  glm::vec3(-1.3f,  1.0f, -1.5f)
-	};
-	/////////////////////////////////
-	///Camera
-
-	///Оказывается важна позиция для LookAt  Ведь это поставщики данныых
-	/*
-	std::cout << "cameraPos == vec3(" << cameraPos.x << ", " << cameraPos.y << ", " << cameraPos.z << ") " << '\n';
-
-	///Оказывается важна цель для LookAt Ведь это поставщики данныых
-	glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-
-	glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
-
-	std::cout <<"cameraDirection == vec3("<< cameraDirection.x << ", " << cameraDirection.y << ", " << cameraDirection.z << ") " << '\n';
-
-	///Оказывается важна цель для LookAt  Ведь это поставщики данныых
-	
-	glm::vec3 cameraRight = glm::normalize(glm::cross(upWorld, cameraDirection));
-
-	std::cout << "cameraRight == vec3(" << cameraRight.x << ", " << cameraRight.y << ", " << cameraRight.z << ") " << '\n';
-
-	///Остальное вычисления
-	glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
-
-	std::cout << "cameraUp == vec3(" << cameraUp.x << ", " << cameraUp.y << ", " << cameraUp.z << ") " << '\n';
-
-	
-	
-
-	glm::mat4 viewM = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f),
-									glm::vec3(0.0f, 0.0f, 0.0f),
-									glm::vec3(0.0f, 1.0f, 0.0f));
-	*/
-	//камера фронт это шаг вперед по оси Z
-	///Так же это гарантирует что камера всегда смотрит в направлении цели
-//	glm::mat4 viewM2 = glm::lookAt(cameraPos,	cameraPos + cameraFront ,upWorld);
-
-	/////////////////////////////////
-
-
-	
-
-
-
-
-	 ////////////////////
-	
-
-	//Вызвай до использования присвоений в программу
-	
-	
-	
-
-	////////////////////////////////////
-
-	
-
-	
-
+	// render loop
+   // -----------
 	while (!glfwWindowShouldClose(window))
 	{
 		
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	
+			
 		
 		///И вот ответ матрицу надо всегда сбрасывать до начальных значений на каждой итерации
 		///иначе значения вращения будут прибавляться по нарастающей
 		///Так как матрица объявлена здесь то и отправка ее в шейдер пойдет после объявления
 		/// Ну и преписывать матрицу в область памяти ГПУ нужно после изменения :))
+		  // per-frame time logic
+		// --------------------
 		GLfloat currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 		
+
+		// input
+		// -----
 		processInput(window);
 
-		ourShader.use();
+		// render
+	   // ------
 
-
-		/// Мы не вызывает Uniform но текстура сама попадаешь в шейдер объект Sampler2d
-		///Хотя нужную текстуры все-таки забандили
-		/// Активируем текстурный блок перед привязкой текстуры
-		glActiveTexture(GL_TEXTURE0); 	/// Хотя нулевой блок всегда активирован по умолчанию
-		/// Если нужно более одного то начинаем все активировать
-		glBindTexture(GL_TEXTURE_2D, texture1);
-		glUniform1i(glGetUniformLocation(ourShader.ID, "ourTexture1"), 0);
-
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, texture2);
-		glUniform1i(glGetUniformLocation(ourShader.ID, "ourTexture2"), 1);
-
-		GLint modelLoc = glGetUniformLocation(ourShader.ID, "model");
-
-		glm::mat4 view = camera.GetViewMatrix();
-		ourShader.setMat4("view", view);
+		 // be sure to activate shader when setting uniforms/drawing objects
+		lightingShader.use();
+		lightingShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+		lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+		
 
 		glm::mat4  projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)width / height, 0.1f, 100.0f);
-		ourShader.setMat4("projection", projection);
+		glm::mat4 view = camera.GetViewMatrix();
+		
+		lightingShader.setMat4("projection", projection);
+		lightingShader.setMat4("view", view);
+		
 
+		// world transformation
+		glm::mat4 model = glm::mat4(1.0f);
+		lightingShader.setMat4("model", model);
 
+		// render the cube
+		glBindVertexArray(cubeVAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		
 
-		glBindVertexArray(VAO);
+		// also draw the lamp object
+		lampShader.use();
+		lampShader.setMat4("projection", projection);
+		lampShader.setMat4("view", view);
 
-		for (GLuint i = 0; i < 10; i++)
-		{
-			glm::mat4 model(1.0f);
-			model = glm::translate(model, cubePositions[i]);
-			GLfloat angle = 20.0f * i;
-			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, lightPos);
+		model = glm::scale(model, glm::vec3(0.2f));
+    	lampShader.setMat4("model", model);
 
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-		}
-		glBindVertexArray(0);
+		glBindVertexArray(lightVAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		
+		// Рисование куба лампы
+		glBindVertexArray(lightVAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	
+
 		
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 		/// Проверяем события и вызываем функции обратного вызова.
 		
 	}
-	glDeleteVertexArrays(1, &VAO);
+	// optional: de-allocate all resources once they've outlived their purpose:
+   // ------------------------------------------------------------------------
+	glDeleteVertexArrays(1, &cubeVAO);
+	glDeleteVertexArrays(1, &lightVAO);
 	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
+	
 
 
 	glfwTerminate();
