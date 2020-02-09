@@ -264,7 +264,7 @@ int main()
 		lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 
 		lightingShader.setVec3("lightPos", lightPos);
-
+		lightingShader.setVec3("viewPos", camera.Position);
 
 		glm::mat4  projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)width / height, 0.1f, 100.0f);
 		glm::mat4 view = camera.GetViewMatrix();
