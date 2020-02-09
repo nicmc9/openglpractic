@@ -1,4 +1,4 @@
-// learngl.cpp : This file contains the 'main' function. Program execution begins and ends there.
+п»ї// learngl.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
 #include <iostream>
@@ -33,8 +33,8 @@ GLuint  cubeVAO, lightVAO, VBO;
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
 
-GLfloat deltaTime = 0.0f;	// Время, прошедшее между последним и текущим кадром
-GLfloat lastFrame = 0.0f;  	// Время вывода последнего кадра
+GLfloat deltaTime = 0.0f;	// Р’СЂРµРјСЏ, РїСЂРѕС€РµРґС€РµРµ РјРµР¶РґСѓ РїРѕСЃР»РµРґРЅРёРј Рё С‚РµРєСѓС‰РёРј РєР°РґСЂРѕРј
+GLfloat lastFrame = 0.0f;  	// Р’СЂРµРјСЏ РІС‹РІРѕРґР° РїРѕСЃР»РµРґРЅРµРіРѕ РєР°РґСЂР°
 
 GLfloat yaw = -90.0f;
 GLfloat pitch = 0.0f;
@@ -57,8 +57,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 
 	
-	// Когда пользователь нажимает ESC, мы устанавливаем свойство WindowShouldClose в true, 
-	// и приложение после этого закроется
+	// РљРѕРіРґР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅР°Р¶РёРјР°РµС‚ ESC, РјС‹ СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЃРІРѕР№СЃС‚РІРѕ WindowShouldClose РІ true, 
+	// Рё РїСЂРёР»РѕР¶РµРЅРёРµ РїРѕСЃР»Рµ СЌС‚РѕРіРѕ Р·Р°РєСЂРѕРµС‚СЃСЏ
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
 }
@@ -101,49 +101,48 @@ void init() {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 
-
 	GLfloat vertices[] = {
-	   -0.5f, -0.5f, -0.5f,
-		0.5f, -0.5f, -0.5f,
-		0.5f,  0.5f, -0.5f,
-		0.5f,  0.5f, -0.5f,
-	   -0.5f,  0.5f, -0.5f,
-	   -0.5f, -0.5f, -0.5f,
+	   -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+	   -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+	   -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
 
-	   -0.5f, -0.5f,  0.5f,
-		0.5f, -0.5f,  0.5f,
-		0.5f,  0.5f,  0.5f,
-		0.5f,  0.5f,  0.5f,
-	   -0.5f,  0.5f,  0.5f,
-	   -0.5f, -0.5f,  0.5f,
+	   -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+	   -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+	   -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
 
-	   -0.5f,  0.5f,  0.5f,
-	   -0.5f,  0.5f, -0.5f,
-	   -0.5f, -0.5f, -0.5f,
-	   -0.5f, -0.5f, -0.5f,
-	   -0.5f, -0.5f,  0.5f,
-	   -0.5f,  0.5f,  0.5f,
+	   -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+	   -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+	   -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+	   -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+	   -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+	   -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
 
-		0.5f,  0.5f,  0.5f,
-		0.5f,  0.5f, -0.5f,
-		0.5f, -0.5f, -0.5f,
-		0.5f, -0.5f, -0.5f,
-		0.5f, -0.5f,  0.5f,
-		0.5f,  0.5f,  0.5f,
+		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
 
-	   -0.5f, -0.5f, -0.5f,
-		0.5f, -0.5f, -0.5f,
-		0.5f, -0.5f,  0.5f,
-		0.5f, -0.5f,  0.5f,
-	   -0.5f, -0.5f,  0.5f,
-	   -0.5f, -0.5f, -0.5f,
+	   -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+		0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+	   -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+	   -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
 
-	   -0.5f,  0.5f, -0.5f,
-		0.5f,  0.5f, -0.5f,
-		0.5f,  0.5f,  0.5f,
-		0.5f,  0.5f,  0.5f,
-	   -0.5f,  0.5f,  0.5f,
-	   -0.5f,  0.5f, -0.5f,
+	   -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+	   -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+	   -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
 	};
 		   	
 	glGenVertexArrays(1, &cubeVAO);
@@ -152,20 +151,26 @@ void init() {
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
+	//Р‘Р»СЏС‚СЊ Р·РЅР°С‡РёС‚СЊ СЌС‚Рѕ РјР°СЃСЃРёРІ Р°С‚СЂРёР±СѓС‚РѕРІ (РІРµСЂС€РёРЅС‹)
 
 	glBindVertexArray(cubeVAO);
 
 	// position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
+	// normal attribute
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+	//РџСЂРѕС†РµРґСѓСЂР° РіРѕРІРѕСЂРёС‚ РѕС‚РєСѓРґР° Р±СЂР°С‚СЊ РґР°РЅРЅС‹Рµ РёР· РјР°СЃСЃРёРІР° Р°С‚СЂРёР±СѓС‚РѕРІ Рё РІ РєР°РєРѕР№ С„РѕСЂРјР°С‚Рµ РѕРЅРё РЅР°С…РѕРґСЏС‚СЊСЃСЏ
+	glEnableVertexAttribArray(1);
+	// glDisableVertexAttribArray(0); - РѕС‚РєР»СЋС‡Р°СЏ РЅРµРЅСѓР¶РЅС‹Рµ Р°С‚СЂРёР±СѓС‚С‹(РїРѕСЃР»Рµ РѕС‚СЂРёСЃРѕРІРєРё РЅР°РїСЂРёРјРµСЂ) РјС‹ РЅРµ РїРµСЂРµРґР°РµРј Р»РёС€РЅРёС… РґР°РЅРЅС‹С… С€РµР№РґРµСЂР°Рј
+	//РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РІСЃРµ Р°С‚СЂРёР±СѓС‚С‹ РЅР°С…РѕРґСЏС‚СЃСЏ РІ РІС‹РєР»СЋС‡РµРЅРЅРѕРј СЃРѕСЃС‚РѕСЏРЅРёРё
 	// second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
 
 	glGenVertexArrays(1, &lightVAO);
 	glBindVertexArray(lightVAO);
 	// we only need to bind to the VBO (to link it with glVertexAttribPointer), no need to fill it; the VBO's data already contains all we need (it's already bound, but we do it again for educational purposes)
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
 	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
@@ -180,17 +185,17 @@ void init() {
 
 int main()
 {
-	//Инициализация GLFW
+	//РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ GLFW
 	glfwInit();
-	//Настройка GLFW
-	//Задается минимальная требуемая версия OpenGL. 
-	//Мажорная 
+	//РќР°СЃС‚СЂРѕР№РєР° GLFW
+	//Р—Р°РґР°РµС‚СЃСЏ РјРёРЅРёРјР°Р»СЊРЅР°СЏ С‚СЂРµР±СѓРµРјР°СЏ РІРµСЂСЃРёСЏ OpenGL. 
+	//РњР°Р¶РѕСЂРЅР°СЏ 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	//Минорная
+	//РњРёРЅРѕСЂРЅР°СЏ
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	//Установка профайла для которого создается контекст
+	//РЈСЃС‚Р°РЅРѕРІРєР° РїСЂРѕС„Р°Р№Р»Р° РґР»СЏ РєРѕС‚РѕСЂРѕРіРѕ СЃРѕР·РґР°РµС‚СЃСЏ РєРѕРЅС‚РµРєСЃС‚
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	//Выключение возможности изменения размера окна
+	//Р’С‹РєР»СЋС‡РµРЅРёРµ РІРѕР·РјРѕР¶РЅРѕСЃС‚Рё РёР·РјРµРЅРµРЅРёСЏ СЂР°Р·РјРµСЂР° РѕРєРЅР°
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 	GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", nullptr, nullptr);
@@ -235,10 +240,10 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
 		
-		///И вот ответ матрицу надо всегда сбрасывать до начальных значений на каждой итерации
-		///иначе значения вращения будут прибавляться по нарастающей
-		///Так как матрица объявлена здесь то и отправка ее в шейдер пойдет после объявления
-		/// Ну и преписывать матрицу в область памяти ГПУ нужно после изменения :))
+		///Р РІРѕС‚ РѕС‚РІРµС‚ РјР°С‚СЂРёС†Сѓ РЅР°РґРѕ РІСЃРµРіРґР° СЃР±СЂР°СЃС‹РІР°С‚СЊ РґРѕ РЅР°С‡Р°Р»СЊРЅС‹С… Р·РЅР°С‡РµРЅРёР№ РЅР° РєР°Р¶РґРѕР№ РёС‚РµСЂР°С†РёРё
+		///РёРЅР°С‡Рµ Р·РЅР°С‡РµРЅРёСЏ РІСЂР°С‰РµРЅРёСЏ Р±СѓРґСѓС‚ РїСЂРёР±Р°РІР»СЏС‚СЊСЃСЏ РїРѕ РЅР°СЂР°СЃС‚Р°СЋС‰РµР№
+		///РўР°Рє РєР°Рє РјР°С‚СЂРёС†Р° РѕР±СЉСЏРІР»РµРЅР° Р·РґРµСЃСЊ С‚Рѕ Рё РѕС‚РїСЂР°РІРєР° РµРµ РІ С€РµР№РґРµСЂ РїРѕР№РґРµС‚ РїРѕСЃР»Рµ РѕР±СЉСЏРІР»РµРЅРёСЏ
+		/// РќСѓ Рё РїСЂРµРїРёСЃС‹РІР°С‚СЊ РјР°С‚СЂРёС†Сѓ РІ РѕР±Р»Р°СЃС‚СЊ РїР°РјСЏС‚Рё Р“РџРЈ РЅСѓР¶РЅРѕ РїРѕСЃР»Рµ РёР·РјРµРЅРµРЅРёСЏ :))
 		  // per-frame time logic
 		// --------------------
 		GLfloat currentFrame = glfwGetTime();
@@ -252,12 +257,14 @@ int main()
 
 		// render
 	   // ------
-
+		
 		 // be sure to activate shader when setting uniforms/drawing objects
 		lightingShader.use();
 		lightingShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
 		lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-		
+
+		lightingShader.setVec3("lightPos", lightPos);
+
 
 		glm::mat4  projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)width / height, 0.1f, 100.0f);
 		glm::mat4 view = camera.GetViewMatrix();
@@ -289,7 +296,7 @@ int main()
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		
-		// Рисование куба лампы
+		// Р РёСЃРѕРІР°РЅРёРµ РєСѓР±Р° Р»Р°РјРїС‹
 		glBindVertexArray(lightVAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 	
@@ -297,7 +304,7 @@ int main()
 		
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-		/// Проверяем события и вызываем функции обратного вызова.
+		/// РџСЂРѕРІРµСЂСЏРµРј СЃРѕР±С‹С‚РёСЏ Рё РІС‹Р·С‹РІР°РµРј С„СѓРЅРєС†РёРё РѕР±СЂР°С‚РЅРѕРіРѕ РІС‹Р·РѕРІР°.
 		
 	}
 	// optional: de-allocate all resources once they've outlived their purpose:
