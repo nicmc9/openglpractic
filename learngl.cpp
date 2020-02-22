@@ -145,6 +145,8 @@ void init() {
 	   -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
 	};
 		   	
+	
+
 	glGenVertexArrays(1, &cubeVAO);
 	glGenBuffers(1, &VBO);
 
@@ -163,13 +165,18 @@ void init() {
 	//Процедура говорит откуда брать данные из массива атрибутов и в какой формате они находяться
 	glEnableVertexAttribArray(1);
 	// glDisableVertexAttribArray(0); - отключая ненужные атрибуты(после отрисовки например) мы не передаем лишних данных шейдерам
+	//я думаю во время цикла испольнения
 	//по умолчанию все атрибуты находятся в выключенном состоянии
 	// second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
+	glBindVertexArray(0);
+	/*Можно создавать классы оберки для этих процедур но не все так просто - учись у других тоже
+	может нужен класс модели
+	*/
 
 	glGenVertexArrays(1, &lightVAO);
 	glBindVertexArray(lightVAO);
 	// we only need to bind to the VBO (to link it with glVertexAttribPointer), no need to fill it; the VBO's data already contains all we need (it's already bound, but we do it again for educational purposes)
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+//	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
