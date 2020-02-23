@@ -11,19 +11,35 @@ in vec3 FragPos;
 
 out vec4 color;
 
-uniform vec3 objectColor; //ТУТ тоже можно перевести на константы но это не гибкое решение
-uniform vec3 lightColor;
 
-uniform vec3 lightPos;
 uniform vec3 viewPos;
 
 
+struct Material {
+  sampler2D diffuse; 
+  vec3 specular;
+  float shininess;
+};
+
+struct Light {
+    vec3 position;
+
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
+
+uniform Material material;
+uniform Light light;
+
+in vec2 TexCoords;
 
 void main(void)
 {
-    float ambientStrength = 0.1f;
-    vec3  ambient = ambientStrength  * lightColor; //для данного шейдера константа
-  
+   // float ambientStrength = 0.1f;
+   // vec3  ambient = ambientStrength  * lightColor; //для данного шейдера константа
+    vec3  ambient = light.ambient * vec3(texture(material.diffuse,TexCoords));
+
   
 
     vec3 normal = normalize(Normal);
@@ -33,27 +49,27 @@ void main(void)
     //которая упростит скалярное произведение для нахождения угла между векторами
 
      //Вектор направления между источником света и фрагментом
-     vec3 lightDir = normalize(lightPos - FragPos);
+     vec3 lightDir = normalize(light.position - FragPos);
     //Это уже величина воздействия диффузного освещения
     //max нам нужен чтобы убрать отрицательнцю состоявляющую после умножения
      float diff = max(dot(normal, lightDir), 0.0);
     //Компонента диффузного освещения становиться темнее с ростом угла между векторами
-      vec3 diffuse = diff * lightColor;
+      vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse,TexCoords));
 
       //среднее значение чтобы он не оказыва слишком сильного воздействия
-       float specularStrength = 0.5f;
+      // float specularStrength = 0.5f;
        vec3 viewDir = normalize(viewPos - FragPos);
 
        vec3 reflectDir = reflect(-lightDir, normal);
 
     //32 константное значение задающее силу блеска
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-    vec3 specular = specularStrength * spec * lightColor;
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    vec3 specular = light.specular * (spec * material.specular);
 
      //vec3 result = (ambient + diffuse+ specular) * objectColor;
 
      //В ambient мы заложили цвет источника цвета
-      vec3 result = (ambient + diffuse + specular) * objectColor;
+      vec3 result = ambient + diffuse + specular;
 
-     color = vec4(result,1.0f);
+      color = vec4(result,1.0f);
 };

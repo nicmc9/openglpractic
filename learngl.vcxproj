@@ -91,7 +91,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)/../External Libs/GLM;$(SolutionDir)/../External Libs/GLFW/include;$(SolutionDir)/../External Libs/GLEW/include;$(SolutionDir)/../External Libs/SOIL/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/../External Libs/GLM;$(SolutionDir)/../External Libs/GLFW/include;$(SolutionDir)/../External Libs/GLEW/include;$(SolutionDir)/../External Libs/STB;$(SolutionDir)/../External Libs/SOIL/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -169,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
+    <ClInclude Include="filesystem.h" />
     <ClInclude Include="shader_m.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
