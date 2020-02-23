@@ -29,7 +29,7 @@ void processInput(GLFWwindow* window);
 GLuint loadTexture(const char* path);
 
 GLuint  cubeVAO, lightVAO, VBO;
-GLuint diffuseMap;
+GLuint diffuseMap, specularMap;
 
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -203,7 +203,7 @@ void init() {
 	// load textures (we now use a utility function to keep the code more organized)
 	// -----------------------------------------------------------------------------
 	diffuseMap = loadTexture(FileSystem::getPath("res/container2.png").c_str());
-
+	specularMap = loadTexture(FileSystem::getPath("res/container2_specular.png").c_str());
 
 
 }
@@ -262,6 +262,7 @@ int main()
    // --------------------
 	lightingShader.use();
 	lightingShader.setInt("material.diffuse", 0);
+	lightingShader.setInt("material.specular", 1);
 
 	// render loop
    // -----------
@@ -294,9 +295,7 @@ int main()
 		lightingShader.use();
 
 
-		// material properties
-		lightingShader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
-		lightingShader.setFloat("material.shininess", 64.0f);
+	
 
 		// light properties
 		lightingShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
@@ -305,8 +304,16 @@ int main()
 		
 		lightingShader.setVec3("light.position", lightPos);
 		lightingShader.setVec3("viewPos", camera.Position);
+		// material properties
+		lightingShader.setFloat("material.shininess", 64.0f);
 
-
+		// bind diffuse map
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, diffuseMap);
+		// bind specular map
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, specularMap);
+		//
 
 		glm::mat4  projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)width / height, 0.1f, 100.0f);
 		glm::mat4 view = camera.GetViewMatrix();
@@ -319,9 +326,7 @@ int main()
 		glm::mat4 model = glm::mat4(1.0f);
 		lightingShader.setMat4("model", model);
 
-		// bind diffuse map
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, diffuseMap);
+		
 
 		// render the cube
 		glBindVertexArray(cubeVAO);
